@@ -7,13 +7,13 @@ export default class CLIConnector implements Connector {
     [key: string]: (...args: any[]) => Promise<any>;
   };
 
+  name: string = 'cli';
+
   settings: Settings;
 
   constructor(public dataSource: DataSource) {
     this.settings = dataSource.settings as Settings;
   }
-
-  name: string = 'cli';
 
   async connect(): Promise<void> {
     await spawn(this.settings.command);

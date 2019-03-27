@@ -1,9 +1,12 @@
 import { DataSource } from '@loopback/repository';
 import Builder from './builder';
 import Connector from './connector';
-import { DataAccessObject, Operation, Settings } from './types';
+import { Operation, Settings } from './types';
 
-export default function initialize(dataSource: DataSource, callback: () => {}) {
+export default function initialize(
+  dataSource: DataSource,
+  callback?: () => {}
+) {
   const settings: Settings = {
     command: 'echo',
     operations: [],
@@ -11,7 +14,6 @@ export default function initialize(dataSource: DataSource, callback: () => {}) {
   };
   const connector = new Connector(dataSource);
   dataSource.connector = connector;
-
   if (Array.isArray(settings.operations)) {
     settings.operations.forEach((operation: Operation) => {
       const builder = new Builder(
@@ -23,11 +25,9 @@ export default function initialize(dataSource: DataSource, callback: () => {}) {
         const paramNames: string[] = operation.functions[fnName];
         const fn = builder.operation(paramNames);
         dataSource[fnName] = fn;
-
-        connector.DataAccessObject[fnName as keyof DataAccessObject] = fn;
+        connector.DataAccessObject[fnName] = fn;
       });
     });
   }
-
   if (callback) process.nextTick(callback);
 }
