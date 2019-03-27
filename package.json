@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "connect command line interfaces as a datasource for loopback",
   "keywords": [
     "loopback-connector-cli",
@@ -48,14 +48,11 @@
     "type-check:watch": "npm run type-check -- --watch"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.0",
     "@loopback/repository": "^1.2.1",
     "@types/cross-spawn": "^6.0.0",
-    "@types/lodash": "^4.14.123",
     "cross-spawn": "^6.0.5",
     "dirty-json": "^0.7.0",
     "jsonpath-plus": "^0.18.0",
-    "lodash": "^4.17.11",
     "newregexp": "^1.0.1"
   },
   "devDependencies": {
@@ -63,9 +60,11 @@
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.3.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-typescript": "^7.3.3",
     "@types/jest": "^24.0.11",
+    "@types/lodash": "^4.14.123",
     "@types/node": "^11.11.6",
     "@typescript-eslint/eslint-plugin": "^1.4.2",
     "@typescript-eslint/parser": "^1.4.2",
@@ -75,6 +74,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "jest": "^24.5.0",
+    "lodash": "^4.17.11",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.3333"
