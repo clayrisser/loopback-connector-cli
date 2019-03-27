@@ -1,7 +1,8 @@
+import _ from 'lodash';
+import { DataSource } from '@loopback/repository';
 import Builder from '../src/builder';
 import Connector from '../src/connector';
 import { Operation } from '../src/types';
-import { DataSource } from '@loopback/repository';
 
 const dataSource: DataSource = {
   name: 'echo',
@@ -54,5 +55,36 @@ describe('builder.invoke()', () => {
     );
     const echo = builder.operation(operation.functions.echo);
     expect(await echo('Hello, world!')).toEqual('Hello, world!\n');
+  });
+
+  it('resolves template.responseRegex', async () => {
+    const clonedDataSource: DataSource = _.cloneDeep(dataSource);
+    clonedDataSource.settings.operations[0].template.responseRegex = '/w.+d/';
+    const operation: Operation = clonedDataSource.settings.operations[0];
+    const builder = new Builder(
+      clonedDataSource.settings.command,
+      operation.template,
+      connector
+    );
+    const echo = builder.operation(operation.functions.echo);
+    expect(await echo('Hello, world!')).toEqual('world');
+  });
+
+  it('resolves template.responsePath', async () => {
+    const clonedDataSource: DataSource = _.cloneDeep(dataSource);
+    clonedDataSource.settings.operations[0].template = {
+      ...dataSource.settings.operations[0].template,
+      args: ['=> {"hello": "world"}'],
+      responseRegex: '(?<==> ).*',
+      responsePath: '$.hello'
+    };
+    const operation: Operation = clonedDataSource.settings.operations[0];
+    const builder = new Builder(
+      clonedDataSource.settings.command,
+      operation.template,
+      connector
+    );
+    const echo = builder.operation(operation.functions.echo);
+    expect(await echo()).toEqual('world');
   });
 });

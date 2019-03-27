@@ -53,7 +53,10 @@
     "@types/cross-spawn": "^6.0.0",
     "@types/lodash": "^4.14.123",
     "cross-spawn": "^6.0.5",
-    "lodash": "^4.17.11"
+    "dirty-json": "^0.7.0",
+    "jsonpath-plus": "^0.18.0",
+    "lodash": "^4.17.11",
+    "newregexp": "^1.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

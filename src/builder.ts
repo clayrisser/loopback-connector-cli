@@ -1,3 +1,6 @@
+import dirtyJSON from 'dirty-json';
+import newRegExp from 'newregexp';
+import { JSONPath } from 'jsonpath-plus';
 import Connector from './connector';
 import spawn from './spawn';
 import { Template } from './types';
@@ -25,6 +28,19 @@ export default class Builder {
         return arg.replace(regex, properties[i]);
       });
     });
-    return spawn(command, args);
+    let result: string = await spawn(command, args);
+    if (this.template.responseRegex) {
+      const regex = newRegExp(this.template.responseRegex);
+      const matches: string[] = result.match(regex) || [];
+      result = matches.length ? matches[0] : '';
+    }
+    if (this.template.responsePath) {
+      const pathResult = JSONPath({
+        path: this.template.responsePath,
+        json: this.template.dirty ? dirtyJSON.parse(result) : JSON.parse(result)
+      });
+      result = pathResult.length ? pathResult[0] : null;
+    }
+    return result;
   }
 }

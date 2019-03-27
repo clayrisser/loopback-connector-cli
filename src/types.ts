@@ -4,8 +4,11 @@ export interface Settings {
 }
 
 export interface Template {
-  command?: string;
   args: string[];
+  command?: string;
+  dirty: false;
+  responsePath?: string;
+  responseRegex?: string;
 }
 
 export interface Functions {
