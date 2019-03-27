@@ -3,13 +3,20 @@ export interface Settings {
   operations: Operation[];
 }
 
-export type Params = string[] | { name: string; source: string }[];
+export interface Template {
+  command?: string;
+  args: string[];
+}
 
 export interface Functions {
-  [key: string]: Params;
+  [key: string]: string[];
 }
 
 export interface Operation {
-  template: string;
+  template: Template;
   functions: Functions;
+}
+
+export interface DataAccessObject {
+  [key: string]: any;
 }
