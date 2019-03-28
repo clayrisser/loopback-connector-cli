@@ -87,4 +87,22 @@ describe('builder.invoke()', () => {
     const echo = builder.operation(operation.functions.echo);
     expect(await echo()).toEqual('world');
   });
+
+  it('resolves template.responseFunc', async () => {
+    const clonedDataSource: DataSource = _.cloneDeep(dataSource);
+    clonedDataSource.settings.operations[0].template = {
+      ...dataSource.settings.operations[0].template,
+      args: ['123'],
+      responseRegex: '/\\w/g',
+      responseFunc: (result: string) => Number(result)
+    };
+    const operation: Operation = clonedDataSource.settings.operations[0];
+    const builder = new Builder(
+      clonedDataSource.settings.command,
+      operation.template,
+      connector
+    );
+    const echo = builder.operation(operation.functions.echo);
+    expect(await echo()).toEqual([1, 2, 3]);
+  });
 });

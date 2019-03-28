@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "connect command line interfaces as a datasource for loopback",
   "keywords": [
     "loopback-connector-cli",

@@ -13,15 +13,12 @@ export default class Builder {
   ) {}
 
   operation(paramNames: string[]): (...args: any[]) => Promise<any> {
-    return async (...args: any[]): Promise<string | string[]> => {
+    return async (...args: any[]): Promise<any> => {
       return this.invoke(args, paramNames);
     };
   }
 
-  async invoke(
-    properties: any[],
-    paramNames: string[]
-  ): Promise<string | string[]> {
+  async invoke(properties: any[], paramNames: string[]): Promise<any> {
     let args: string[] = this.template.args;
     let command: string = this.template.command || this.command;
     paramNames.forEach((paramName: string, i: number) => {
@@ -31,19 +28,45 @@ export default class Builder {
         return arg.replace(regex, properties[i]);
       });
     });
-    let result: string = await spawn(command, args);
+    let result: any = await spawn(command, args);
     if (this.template.responseRegex) {
       const regex = newRegExp(this.template.responseRegex);
       const matches: string[] = result.match(regex) || [];
-      if (regex.flags.indexOf('g') > -1) return matches;
-      result = matches.length ? matches[0] : '';
+      if (regex.flags.indexOf('g') > -1) {
+        result = matches;
+      } else {
+        result = matches.length ? matches[0] : '';
+      }
     }
     if (this.template.responsePath) {
-      const pathResult = JSONPath({
-        path: this.template.responsePath,
-        json: this.template.dirty ? dirtyJSON.parse(result) : JSON.parse(result)
-      });
-      result = pathResult.length ? pathResult[0] : null;
+      if (Array.isArray(result)) {
+        for (let i = 0; i < result.length; i++) {
+          const pathResult = JSONPath({
+            path: this.template.responsePath,
+            json: this.template.dirty
+              ? dirtyJSON.parse(result[i])
+              : JSON.parse(result[i])
+          });
+          result[i] = pathResult ? pathResult[0] : null;
+        }
+      } else {
+        const pathResult = JSONPath({
+          path: this.template.responsePath,
+          json: this.template.dirty
+            ? dirtyJSON.parse(result)
+            : JSON.parse(result)
+        });
+        result = pathResult ? pathResult[0] : null;
+      }
+    }
+    if (typeof this.template.responseFunc === 'function') {
+      if (Array.isArray(result)) {
+        for (let i = 0; i < result.length; i++) {
+          result[i] = await this.template.responseFunc(result[i]);
+        }
+      } else {
+        result = await this.template.responseFunc(result);
+      }
     }
     return result;
   }

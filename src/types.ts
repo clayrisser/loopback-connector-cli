@@ -7,6 +7,7 @@ export interface Template {
   args: string[];
   command?: string;
   dirty: false;
+  responseFunc?: (result: any) => any;
   responsePath?: string;
   responseRegex?: string;
 }
