@@ -13,12 +13,15 @@ export default class Builder {
   ) {}
 
   operation(paramNames: string[]): (...args: any[]) => Promise<any> {
-    return async (...args: any[]): Promise<string> => {
+    return async (...args: any[]): Promise<string | string[]> => {
       return this.invoke(args, paramNames);
     };
   }
 
-  async invoke(properties: any[], paramNames: string[]): Promise<string> {
+  async invoke(
+    properties: any[],
+    paramNames: string[]
+  ): Promise<string | string[]> {
     let args: string[] = this.template.args;
     let command: string = this.template.command || this.command;
     paramNames.forEach((paramName: string, i: number) => {
@@ -32,6 +35,7 @@ export default class Builder {
     if (this.template.responseRegex) {
       const regex = newRegExp(this.template.responseRegex);
       const matches: string[] = result.match(regex) || [];
+      if (regex.flags.indexOf('g') > -1) return matches;
       result = matches.length ? matches[0] : '';
     }
     if (this.template.responsePath) {
