@@ -33,18 +33,6 @@ describe('new Connector()', () => {
   });
 });
 
-describe('connector.connect()', () => {
-  it('connects to the datasource', async () => {
-    const connector = new Connector(dataSource);
-    expect(await connector.connect()).toBe(undefined);
-  });
-
-  it('throws an error when failing to connect to the datasource', async () => {
-    const connector = new Connector(invalidDataSource);
-    await expect(connector.connect()).rejects.toThrow();
-  });
-});
-
 describe('connector.ping()', () => {
   it('pings the datasource', async () => {
     const connector = new Connector(dataSource);

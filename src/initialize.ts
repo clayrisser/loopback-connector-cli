@@ -1,6 +1,6 @@
-import { DataSource } from '@loopback/repository';
+import { Connector, DataSource } from '@loopback/repository';
 import Builder from './builder';
-import Connector from './connector';
+import CLIConnector from './connector';
 import { Operation, Settings } from './types';
 
 export default function initialize(
@@ -12,8 +12,8 @@ export default function initialize(
     operations: [],
     ...dataSource.settings
   };
-  const connector = new Connector(dataSource);
-  dataSource.connector = connector;
+  const connector: any = new CLIConnector(dataSource);
+  dataSource.connector = connector as Connector;
   if (Array.isArray(settings.operations)) {
     settings.operations.forEach((operation: Operation) => {
       const builder = new Builder(
