@@ -6,6 +6,11 @@
 
 Please ★ this repo if you found it useful ★ ★ ★
 
+## Features
+
+- compatible with loopback
+- compatible with loopback 4
+
 ## Installation
 
 ```sh
@@ -15,6 +20,7 @@ npm install --save loopback-connector-cli
 ## Dependencies
 
 - [NodeJS](https://nodejs.org)
+- [Loopback](https://loopback.io)
 
 ## Usage
 
