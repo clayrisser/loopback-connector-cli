@@ -77,4 +77,5 @@ typings/
 /lib
 package-lock.json
 yarn.lock
-/src/*.js
+tsconfig.tsbuildinfo
+pnpm-lock.yaml

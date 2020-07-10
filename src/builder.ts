@@ -19,7 +19,7 @@ export default class Builder {
   }
 
   async invoke(properties: any[], paramNames: string[]): Promise<any> {
-    let args: string[] = this.template.args;
+    let { args } = this.template;
     let command: string = this.template.command || this.command;
     paramNames.forEach((paramName: string, i: number) => {
       const regex = new RegExp(`{${paramName}}`, 'g');

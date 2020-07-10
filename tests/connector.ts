@@ -1,5 +1,5 @@
-import Connector from '../src/connector';
 import { DataSource } from '@loopback/repository';
+import Connector from '../src/connector';
 
 const dataSource: DataSource = {
   name: 'echo',

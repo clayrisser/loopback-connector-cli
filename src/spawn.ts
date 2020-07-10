@@ -7,8 +7,10 @@ export default async function spawn(
   return new Promise((resolve, reject) => {
     const cp = crossSpawn(command, args);
     let message = '';
-    if (cp.stdout) cp.stdout.on('data', data => (message += data.toString()));
-    if (cp.stderr) cp.stderr.on('data', data => (message += data.toString()));
+    if (cp.stdout)
+      cp.stdout.on('data', (data: any) => (message += data.toString()));
+    if (cp.stderr)
+      cp.stderr.on('data', (data: any) => (message += data.toString()));
     cp.on('close', (code: number) => {
       if (code !== 0) return reject(new Error(message));
       return resolve(message);

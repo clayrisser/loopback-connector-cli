@@ -1,6 +1,6 @@
 {
   "name": "loopback-connector-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "connect command line interfaces as a datasource for loopback",
   "keywords": [
     "loopback-connector-cli",
@@ -34,50 +34,55 @@
     "url": "https://github.com/codejamninja/loopback-connector-cli"
   },
   "scripts": {
-    "build": "npm run build:types && npm run build:js",
-    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
-    "build:types": "tsc --emitDeclarationOnly",
-    "clean": "git clean -fXd -e \\!node_modules -e \\!node_modules/**/*",
-    "format": "prettier --write ./src/*.ts ./src/**/*.ts",
-    "lint": "npm run format && eslint ./src/**/*.ts",
-    "lint:fix": "npm run format && eslint --fix ./**/*.ts",
-    "prepublish": "npm run build",
-    "start": "ts-node src",
-    "test": "jest",
-    "type-check": "tsc --noEmit",
-    "type-check:watch": "npm run type-check -- --watch"
+    "build": "make -s build",
+    "clean": "make -s clean",
+    "coverage": "make -s coverage",
+    "format": "make -s format",
+    "lint": "make -s lint",
+    "prepare": "make -s prepare",
+    "purge": "make -s purge",
+    "report": "make -s report",
+    "spellcheck": "make -s spellcheck",
+    "start": "make -s start",
+    "test": "make -s test",
+    "test:ui": "make test-ui",
+    "test:watch": "make -s test-watch"
   },
   "dependencies": {
-    "@loopback/repository": "^1.2.1",
-    "@types/cross-spawn": "^6.0.0",
-    "cross-spawn": "^6.0.5",
-    "dirty-json": "^0.7.0",
-    "jsonpath-plus": "^0.18.0",
-    "newregexp": "^1.0.1"
+    "@loopback/repository": "^2.9.0",
+    "core-js": "^3.6.5",
+    "cross-spawn": "^7.0.3",
+    "dirty-json": "^0.9.1",
+    "jsonpath-plus": "^4.0.0",
+    "lodash": "^4.17.19",
+    "newregexp": "^1.3.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.3.4",
-    "@babel/plugin-proposal-class-properties": "^7.3.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
-    "@babel/plugin-transform-runtime": "^7.4.0",
-    "@babel/preset-env": "^7.3.4",
-    "@babel/preset-typescript": "^7.3.3",
-    "@types/jest": "^24.0.11",
-    "@types/lodash": "^4.14.123",
-    "@types/node": "^11.11.6",
-    "@typescript-eslint/eslint-plugin": "^1.4.2",
-    "@typescript-eslint/parser": "^1.4.2",
-    "eslint": "^5.15.0",
-    "eslint-config-airbnb-typescript": "^1.1.0",
-    "eslint-config-jam": "^0.2.5",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4",
-    "jest": "^24.5.0",
-    "lodash": "^4.17.11",
-    "ts-jest": "^24.0.0",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.3.3333"
+    "@babel/cli": "^7.10.4",
+    "@babel/core": "^7.10.4",
+    "@babel/node": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/cross-spawn": "^6.0.2",
+    "@types/jest": "^26.0.4",
+    "@types/lodash": "^4.14.157",
+    "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "@typescript-eslint/parser": "^3.6.0",
+    "cspell": "^4.0.63",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "gnumake": "^0.3.4",
+    "jest": "^26.1.0",
+    "jest-sonar-reporter": "^2.0.0",
+    "lockfile-lint": "^4.3.7",
+    "majestic": "^1.7.0",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.6"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -86,11 +91,13 @@
     "lib"
   ],
   "jest": {
-    "preset": "ts-jest",
     "testEnvironment": "node",
-    "verbose": true,
-    "testRegex": [
-      "tests/.*[^d]\\.[jt]sx?$"
-    ]
+    "testRegex": "tests(/|/.*/)[^_/]*[jt]sx?$",
+    "verbose": true
+  },
+  "jestSonar": {
+    "reportPath": "node_modules/.tmp/reports",
+    "reportFile": "test-report.xml",
+    "indent": 4
   }
 }
