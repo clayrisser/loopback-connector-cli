@@ -4,6 +4,8 @@
 
 > connect command line interfaces as a datasource for loopback
 
+![](assets/loopback-connector-cli.png)
+
 Please ★ this repo if you found it useful ★ ★ ★
 
 ## Features
